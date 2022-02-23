@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.srizan.apod.api.ApodService
 import com.srizan.apod.model.Picture
+import com.srizan.apod.repository.PictureRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
@@ -16,27 +17,20 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel
 @Inject constructor(
-    private val apodService : ApodService)
-    : ViewModel() {
+    private val apodService: ApodService,
+    private val pictureRepository: PictureRepository
+) : ViewModel() {
 
-    val pictureLiveData = MutableLiveData<Picture>()
+    val picture = pictureRepository.picture
     val isLoading = MutableLiveData<Boolean>()
 
     init {
-        //getPicture()
-    }
-
-    fun getPicture(){
         viewModelScope.launch {
-            withTimeout(5000){
-                try {
-                    isLoading.value = true
-                    pictureLiveData.value = apodService.getPicture()
-                    isLoading.value = false
-                } catch (e: Exception){
-                    e.printStackTrace()
-                }
-            }
+            isLoading.postValue(true)
+            pictureRepository.refreshPicture()
+            isLoading.postValue(false)
         }
     }
+
+
 }

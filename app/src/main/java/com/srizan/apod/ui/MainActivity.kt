@@ -13,9 +13,14 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.srizan.apod.R
+import com.srizan.apod.database.PictureDao
 import com.srizan.apod.databinding.ActivityMainBinding
+import com.srizan.apod.model.Picture
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         // network is available for use
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
-            viewModel.getPicture()
+
         }
 
         // Network capabilities have changed for the network
@@ -49,8 +54,7 @@ class MainActivity : AppCompatActivity() {
         // lost network connection
         override fun onLost(network: Network) {
             super.onLost(network)
-            Toast.makeText(this@MainActivity,"Internet Disconnected", Toast.LENGTH_SHORT).show()
-            viewModel.isLoading.postValue(false)
+            Toast.makeText(this@MainActivity, "Internet Disconnected", Toast.LENGTH_SHORT).show()
         }
     }
 
