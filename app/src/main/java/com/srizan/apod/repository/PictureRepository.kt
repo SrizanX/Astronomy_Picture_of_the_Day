@@ -2,13 +2,11 @@ package com.srizan.apod.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.srizan.apod.api.ApodService
 import com.srizan.apod.database.PictureDao
 import com.srizan.apod.model.Picture
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 class PictureRepository
